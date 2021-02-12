@@ -1,7 +1,9 @@
 let countdown;
+
 const timerDisplay = document.querySelector('.display__time-left');
 const endTime = document.querySelector('.display__end-time');
 const buttons = document.querySelectorAll('[data-time]');
+const pause = document.querySelector('.pauseTimer');
 
 function timer(seconds) {
     // clear any existing timers
@@ -53,5 +55,41 @@ function customSeconds(e) {
     this.reset();
 }
 
+function pauseTimer() {
+    const timePausedAt = timerDisplay.textContent;
+    let digits = '';
+    let minsLeft = 0;
+    let secsLeft = 0;
+
+    for (i = 0; i < timePausedAt.length; i++) {
+        if (timePausedAt[i] === ':') {
+            minsLeft = parseInt(digits);
+            digits = '';
+            i + 1;
+        }            
+    digits += timePausedAt[i];
+    }
+
+    secsLeft = digits.substring(1);
+    secsLeft = parseInt(secsLeft);
+    clearInterval(countdown);
+    pause.textContent = `Resume Timer`;
+    return [minsLeft, secsLeft];
+}
+
+function resumeTimer() {
+    const timeLeft = pauseTimer();
+    const secondsLeft = (timeLeft[0] * 60) + timeLeft[1];
+    timer(secondsLeft);
+    pause.textContent = `Pause Timer`;
+}
+
 buttons.forEach(button => button.addEventListener('click', startTimer));
 document.customForm.addEventListener('submit', customSeconds);
+pause.addEventListener('click', () => {
+    if (pause.textContent === 'Pause Timer') {
+        pauseTimer();
+    } else {
+        resumeTimer();
+    }
+});

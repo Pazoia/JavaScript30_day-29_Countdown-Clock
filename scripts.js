@@ -46,6 +46,7 @@ function displayEndTime(timestamp) {
 function startTimer() {
     const seconds = parseInt(this.dataset.time);
     timer(seconds);
+    pause.textContent = `Pause Timer`;
 }
 
 function customSeconds(e) {
@@ -53,6 +54,7 @@ function customSeconds(e) {
     const mins = this.minutes.value;
     timer(mins * 60);
     this.reset();
+    pause.textContent = `Pause Timer`;
 }
 
 function pauseTimer() {
